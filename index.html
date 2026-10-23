@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EG07: Quản Lý Tài Chính Cá Nhân - Lê Gia Huy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- Header & Navigation Bar -->
+    <header class="bg-white border-b border-slate-200 py-4 px-6 shadow-sm">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+                <span class="px-3 py-1 bg-emerald-100 text-emerald-700 font-bold text-xs rounded-lg">Mã Đề EG07</span>
+                <h1 class="text-xl font-bold text-slate-900 mt-1">Ứng Dụng Quản Lý Tài Chính Cá Nhân (Finance Tracker)</h1>
+            </div>
+            <div class="text-right text-xs text-slate-500">
+                <p class="font-semibold text-slate-700">Lê Gia Huy - 241A010539</p>
+                <p>Lớp: 261INT440703</p>
+            </div>
+        </div>
+        <!-- Thanh menu tích hợp sẵn link minh chứng Bài 40, 41 và Bài 42 -->
+        <div class="max-w-5xl mx-auto mt-3 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-2 text-xs">
+            <span class="font-semibold text-slate-600"><i class="fa-solid fa-folder-open mr-1"></i> Minh chứng học tập:</span>
+            <a href="images/bai40_js.png" target="_blank" class="px-2.5 py-1 bg-sky-50 hover:bg-sky-100 text-sky-700 rounded font-medium transition flex items-center gap-1">
+                <i class="fa-solid fa-image"></i> Bài 40 (JS: 10/10)
+            </a>
+            <a href="images/bai40_css.png" target="_blank" class="px-2.5 py-1 bg-sky-50 hover:bg-sky-100 text-sky-700 rounded font-medium transition flex items-center gap-1">
+                <i class="fa-solid fa-image"></i> Bài 40 (CSS: 9.8)
+            </a>
+            <a href="images/bai41.png" target="_blank" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded font-medium transition flex items-center gap-1">
+                <i class="fa-solid fa-image"></i> Bài 41 (10/10)
+            </a>
+            <span class="text-slate-300">|</span>
+            <a href="https://lanovahy.github.io/bt42/" target="_blank" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-medium transition flex items-center gap-1">
+                <i class="fa-solid fa-house"></i> Bài 42 (Trang chủ Online)
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-6">
+        
+        <!-- Bài 1: Thẻ hiển thị tổng quan tài chính -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tổng Thu</p>
+                    <h2 id="totalIncome" class="text-2xl font-extrabold text-emerald-600 mt-1">0 đ</h2>
+                </div>
+                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tổng Chi</p>
+                    <h2 id="totalExpense" class="text-2xl font-extrabold text-rose-600 mt-1">0 đ</h2>
+                </div>
+                <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-arrow-trend-down"></i>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Số Dư Hiện Tại</p>
+                    <h2 id="currentBalance" class="text-2xl font-extrabold text-indigo-600 mt-1">0 đ</h2>
+                </div>
+                <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bài 3: Biểu đồ thanh tiến trình (Progress Bar) thu chi đơn giản -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+            <div class="flex justify-between text-xs font-semibold text-slate-600">
+                <span>Tỷ lệ Chi tiêu so với Thu nhập</span>
+                <span id="ratioText">0%</span>
+            </div>
+            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden flex">
+                <div id="expenseProgressBar" class="bg-rose-500 h-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Bài 2: Form thêm giao dịch mới có Validation -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm md:col-span-1 h-fit">
+                <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-emerald-600"></i> Thêm Giao Dịch
+                </h2>
+                <form id="transactionForm" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Loại giao dịch</label>
+                        <select id="type" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:border-emerald-500">
+                            <option value="income">Khoản Thu (+)</option>
+                            <option value="expense">Khoản Chi (-)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Số tiền (VNĐ)</label>
+                        <input type="number" id="amount" step="1000" placeholder="Ví dụ: 500000" 
+                            class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:border-emerald-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Danh mục</label>
+                        <input type="text" id="category" placeholder="Ví dụ: Lương, Ăn uống..." 
+                            class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:border-emerald-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-500 uppercase mb-1">Ngày tháng</label>
+                        <input type="date" id="date" 
+                            class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:border-emerald-500">
+                    </div>
+
+                    <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow transition text-sm">
+                        Thêm Giao Dịch
+                    </button>
+                </form>
+            </div>
+
+            <!-- Bảng lịch sử giao dịch -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm md:col-span-2">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-history text-emerald-600"></i> Lịch Sử Giao Dịch
+                    </h2>
+                    <button id="clearAllBtn" type="button" class="text-xs text-rose-500 hover:underline font-medium">Xóa tất cả</button>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-100 text-slate-400 text-xs uppercase tracking-wider">
+                                <th class="py-3 px-2">Ngày</th>
+                                <th class="py-3 px-2">Danh mục</th>
+                                <th class="py-3 px-2">Loại</th>
+                                <th class="py-3 px-2 text-right">Số tiền</th>
+                                <th class="py-3 px-2 text-center">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionTableBody" class="text-sm divide-y divide-slate-100">
+                            <!-- Dữ liệu được load từ LocalStorage -->
+                        </tbody>
+                    </table>
+                    <div id="emptyState" class="text-center py-10 text-slate-400 text-sm hidden">
+                        Chưa có giao dịch nào được ghi nhận.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center text-xs text-slate-400 py-6 border-t border-slate-200">
+        <p>© 2026 Lê Gia Huy - MSSV: 241A010539 - Lớp: 261INT440703</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let transactions = [];
+            try {
+                const savedData = localStorage.getItem('finance_transactions_eg07');
+                if (savedData) {
+                    transactions = JSON.parse(savedData);
+                }
+            } catch (e) {
+                transactions = [];
+            }
+
+            const dateInput = document.getElementById('date');
+            if (dateInput) {
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const dd = String(today.getDate()).padStart(2, '0');
+                dateInput.value = `${yyyy}-${mm}-${dd}`;
+            }
+
+            function escapeHtml(str) {
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+
+            const form = document.getElementById('transactionForm');
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    const type = document.getElementById('type').value;
+                    const amountVal = document.getElementById('amount').value;
+                    const categoryVal = document.getElementById('category').value.trim();
+                    const dateVal = document.getElementById('date').value;
+
+                    if (!amountVal || !categoryVal || !dateVal) {
+                        alert('Vui lòng không để trống các trường dữ liệu!');
+                        return;
+                    }
+
+                    const amount = parseFloat(amountVal);
+                    if (amount <= 0 || isNaN(amount)) {
+                        alert('Số tiền phải lớn hơn 0!');
+                        return;
+                    }
+
+                    const newTransaction = {
+                        id: Date.now(),
+                        type: type,
+                        amount: amount,
+                        category: escapeHtml(categoryVal),
+                        date: dateVal
+                    };
+
+                    transactions.push(newTransaction);
+                    saveAndRender();
+
+                    document.getElementById('amount').value = '';
+                    document.getElementById('category').value = '';
+                    dateInput.value = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`;
+                });
+            }
+
+            window.deleteTransaction = function (id) {
+                transactions = transactions.filter(t => t.id !== id);
+                saveAndRender();
+            };
+
+            const clearBtn = document.getElementById('clearAllBtn');
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function () {
+                    if (confirm('Bạn có chắc muốn xóa toàn bộ lịch sử giao dịch?')) {
+                        transactions = [];
+                        saveAndRender();
+                    }
+                });
+            }
+
+            function saveAndRender() {
+                try {
+                    localStorage.setItem('finance_transactions_eg07', JSON.stringify(transactions));
+                } catch (e) {
+                    console.error(e);
+                }
+                renderApp();
+            }
+
+            function renderApp() {
+                const tableBody = document.getElementById('transactionTableBody');
+                const emptyState = document.getElementById('emptyState');
+                
+                if (!tableBody) return;
+
+                let totalIncome = 0;
+                let totalExpense = 0;
+
+                tableBody.innerHTML = '';
+
+                if (transactions.length === 0) {
+                    if (emptyState) emptyState.classList.remove('hidden');
+                } else {
+                    if (emptyState) emptyState.classList.add('hidden');
+                    const sortedTransactions = [...transactions].sort((a, b) => b.id - a.id);
+
+                    sortedTransactions.forEach(t => {
+                        if (t.type === 'income') {
+                            totalIncome += t.amount;
+                        } else {
+                            totalExpense += t.amount;
+                        }
+
+                        const row = document.createElement('tr');
+                        row.className = 'hover:bg-slate-50 transition';
+                        row.innerHTML = `
+                            <td class="py-3 px-2 text-slate-600 text-xs">${t.date}</td>
+                            <td class="py-3 px-2 font-medium text-slate-800">${t.category}</td>
+                            <td class="py-3 px-2">
+                                <span class="px-2 py-0.5 rounded-full text-xs font-bold ${t.type === 'income' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
+                                    ${t.type === 'income' ? 'Thu' : 'Chi'}
+                                </span>
+                            </td>
+                            <td class="py-3 px-2 text-right font-bold ${t.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}">
+                                ${t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString('vi-VN')} đ
+                            </td>
+                            <td class="py-3 px-2 text-center">
+                                <button type="button" onclick="deleteTransaction(${t.id})" class="text-slate-400 hover:text-rose-600 transition p-1">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+
+                const balance = totalIncome - totalExpense;
+
+                const totalIncomeEl = document.getElementById('totalIncome');
+                const totalExpenseEl = document.getElementById('totalExpense');
+                const currentBalanceEl = document.getElementById('currentBalance');
+
+                if (totalIncomeEl) totalIncomeEl.innerText = totalIncome.toLocaleString('vi-VN') + ' đ';
+                if (totalExpenseEl) totalExpenseEl.innerText = totalExpense.toLocaleString('vi-VN') + ' đ';
+                if (currentBalanceEl) currentBalanceEl.innerText = balance.toLocaleString('vi-VN') + ' đ';
+
+                let expenseRatio = 0;
+                if (totalIncome > 0) {
+                    expenseRatio = Math.min(Math.round((totalExpense / totalIncome) * 100), 100);
+                } else if (totalExpense > 0) {
+                    expenseRatio = 100;
+                }
+
+                const progressBar = document.getElementById('expenseProgressBar');
+                const ratioText = document.getElementById('ratioText');
+                if (progressBar) progressBar.style.width = expenseRatio + '%';
+                if (ratioText) ratioText.innerText = expenseRatio + '% tổng thu';
+            }
+
+            renderApp();
+        });
+    </script>
+</body>
+</html>
